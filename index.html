@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebook Store - Votre Bibliothèque Numérique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #7c3aed; --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-600: #4b5563; --gray-800: #1f2937; --gray-900: #111827; }
+        body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; }
+        h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        .btn-primary { background: var(--primary); color: white; padding: 14px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; background: transparent; cursor: pointer; }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-blue { background: #0070ba; color: white; padding: 16px 32px; border-radius: 9999px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; border: none; cursor: pointer; font-size: 16px; }
+        .btn-blue:hover { background: #005ea3; transform: translateY(-2px); }
+        .input-field { width: 100%; padding: 14px 18px; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 16px; transition: all 0.3s; }
+        .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.08); z-index: 1000; }
+        .top-bar { background: var(--primary); color: white; text-align: center; padding: 10px; font-size: 14px; font-weight: 500; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--gray-900); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--primary); font-size: 28px; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: var(--gray-800); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-actions { display: flex; gap: 16px; align-items: center; }
+        .nav-actions button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray-800); position: relative; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .nav-actions button:hover { background: var(--gray-100); color: var(--primary); }
+        .cart-count { position: absolute; top: -2px; right: -2px; background: #7c3aed; color: white; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .mobile-menu-btn { display: none; }
+        
+        .hero { padding: 160px 0 100px; background: linear-gradient(135deg, #dbeafe 0%, #f3e8ff 50%, #fff 100%); position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%); border-radius: 50%; }
+        .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--primary); padding: 10px 20px; border-radius: 9999px; font-size: 14px; font-weight: 600; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .hero h1 { font-size: 52px; line-height: 1.1; margin-bottom: 24px; color: var(--gray-900); }
+        .hero h1 span { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 20px; color: var(--gray-600); margin-bottom: 32px; }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .hero-image { position: relative; }
+        .hero-image img { width: 100%; border-radius: 24px; box-shadow: 0 30px 60px rgba(37,99,235,0.2); }
+        .hero-stats { display: flex; gap: 40px; margin-top: 40px; }
+        .hero-stats div h3 { font-size: 32px; font-weight: 700; color: var(--gray-900); }
+        .hero-stats div p { color: var(--gray-600); margin: 0; }
+        
+        .features { padding: 80px 0; background: white; }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+        .feature { padding: 30px 20px; border-radius: 20px; transition: all 0.3s; }
+        .feature:hover { background: var(--gray-50); transform: translateY(-5px); }
+        .feature i { font-size: 36px; color: var(--primary); margin-bottom: 16px; }
+        .feature h3 { font-size: 18px; margin-bottom: 8px; }
+        .feature p { color: var(--gray-600); font-size: 14px; }
+        
+        .categories { padding: 80px 0; background: var(--gray-50); }
+        .section-title { text-align: center; font-size: 40px; margin-bottom: 48px; color: var(--gray-900); }
+        .categories-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+        .category-card { background: white; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; }
+        .category-card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+        .category-card .icon { font-size: 40px; margin-bottom: 12px; }
+        .category-card h3 { font-size: 15px; margin-bottom: 4px; }
+        .category-card p { color: var(--gray-600); font-size: 13px; }
+        
+        .products { padding: 80px 0; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+        .section-header h2 { font-size: 36px; margin-bottom: 8px; }
+        .section-header p { color: var(--gray-600); }
+        .view-all { color: var(--primary); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: all 0.4s; position: relative; border: 1px solid var(--gray-100); }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(37,99,235,0.12); }
+        .product-badge { position: absolute; top: 12px; left: 12px; background: #f59e0b; color: white; padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; z-index: 10; }
+        .product-badge.bestseller { background: #7c3aed; }
+        .product-discount { position: absolute; top: 12px; left: 12px; background: #ef4444; color: white; padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; z-index: 10; }
+        .product-image { position: relative; overflow: hidden; aspect-ratio: 2/3; background: linear-gradient(135deg, #dbeafe 0%, #f3e8ff 100%); }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .product-image img { transform: scale(1.08); }
+        .product-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background 0.3s; }
+        .product-card:hover .product-overlay { background: rgba(0,0,0,0.2); }
+        .product-actions { position: absolute; bottom: 16px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; opacity: 0; transform: translateY(20px); transition: all 0.3s; }
+        .product-card:hover .product-actions { opacity: 1; transform: translateY(0); }
+        .product-actions button { width: 44px; height: 44px; border-radius: 50%; background: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .product-actions button:hover { background: var(--primary); color: white; }
+        .product-info { padding: 20px; }
+        .product-category { color: var(--primary); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .product-name { font-family: 'Merriweather', serif; font-size: 16px; margin: 8px 0; color: var(--gray-900); line-height: 1.4; font-weight: 700; }
+        .product-author { color: var(--gray-500); font-size: 13px; margin-bottom: 12px; }
+        .product-meta { display: flex; gap: 12px; font-size: 12px; color: var(--gray-500); margin-bottom: 12px; }
+        .product-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .product-rating .stars { color: #fbbf24; }
+        .product-rating span { color: var(--gray-500); font-size: 13px; }
+        .product-price-row { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-size: 22px; font-weight: 700; color: var(--primary); }
+        .product-old-price { font-size: 14px; color: #9ca3af; text-decoration: line-through; margin-left: 8px; }
+        .add-to-cart-btn { width: 40px; height: 40px; border-radius: 50%; background: #dbeafe; color: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
+        .add-to-cart-btn:hover { background: var(--primary); color: white; }
+        
+        .bestsellers { padding: 80px 0; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; }
+        .bestsellers-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .bestsellers h2 { font-size: 42px; margin-bottom: 20px; }
+        .bestsellers p { font-size: 18px; opacity: 0.95; margin-bottom: 28px; }
+        .bestsellers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .bestseller-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 16px; border-radius: 16px; transition: all 0.3s; text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        .bestseller-card:hover { background: rgba(255,255,255,0.25); }
+        .bestseller-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+        .bestseller-card h3 { font-size: 14px; margin-bottom: 4px; }
+        .bestseller-card p { font-size: 16px; font-weight: 700; margin: 0; }
+        
+        footer { background: var(--gray-900); color: white; padding: 60px 0 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+        .footer-brand .logo { color: white; margin-bottom: 16px; }
+        .footer-brand p { color: #9ca3af; margin-bottom: 20px; line-height: 1.7; }
+        .social-links { display: flex; gap: 12px; }
+        .social-links a { width: 44px; height: 44px; background: #374151; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.3s; }
+        .social-links a:hover { background: var(--primary); }
+        .footer-links h4 { font-size: 18px; margin-bottom: 20px; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #9ca3af; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { border-top: 1px solid #374151; padding: 24px 0; text-align: center; color: #6b7280; }
+        
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-drawer { position: fixed; top: 0; right: 0; width: 100%; max-width: 420px; height: 100%; background: white; z-index: 2001; transform: translateX(100%); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .cart-drawer.active { transform: translateX(0); }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 24px; border-bottom: 1px solid var(--gray-100); }
+        .cart-header h2 { font-family: 'Merriweather', serif; font-size: 22px; }
+        .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-empty { text-align: center; padding: 60px 20px; }
+        .cart-empty i { font-size: 64px; color: #e5e7eb; margin-bottom: 16px; }
+        .cart-item { display: flex; gap: 14px; padding: 16px; background: var(--gray-50); border-radius: 12px; margin-bottom: 12px; }
+        .cart-item img { width: 60px; height: 90px; object-fit: cover; border-radius: 8px; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+        .cart-item-price { color: var(--primary); font-weight: 700; }
+        .cart-item-qty { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .cart-item-qty button { width: 26px; height: 26px; border-radius: 50%; border: none; background: white; cursor: pointer; font-weight: 600; }
+        .remove-item { color: #ef4444; background: none; border: none; cursor: pointer; font-size: 16px; }
+        .cart-footer { padding: 24px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 20px; }
+        .cart-total span:last-child { font-weight: 700; color: var(--primary); font-size: 24px; }
+        .checkout-btn { width: 100%; }
+        
+        .notification { position: fixed; top: 100px; right: 20px; background: var(--primary); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 3000; transform: translateX(400px); transition: transform 0.3s; display: flex; align-items: center; gap: 12px; }
+        .notification.show { transform: translateX(0); }
+        
+        @media (max-width: 1024px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+            .categories-grid { grid-template-columns: repeat(3, 1fr); }
+            .hero h1 { font-size: 42px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-content { grid-template-columns: 1fr; }
+            .hero { padding: 140px 0 60px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .bestsellers-content { grid-template-columns: 1fr; }
+            .bestsellers-grid { grid-template-columns: repeat(3, 1fr); }
+            .categories-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero h1 { font-size: 36px; }
+            .section-title { font-size: 32px; }
+        }
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 30px; }
+            .hero-buttons { flex-direction: column; }
+            .hero-buttons .btn-primary, .hero-buttons .btn-outline { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="top-bar">📚 Livraison instantanée • Accès à vie • 30 jours satisfait ou remboursé</div>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo"><i class="fas fa-book"></i> Ebook Store</a>
+                <ul class="nav-links">
+                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#ebooks">Ebooks</a></li>
+                    <li><a href="#categories">Catégories</a></li>
+                    <li><a href="#bestsellers">Best-sellers</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button><i class="fas fa-search"></i></button>
+                    <button><i class="fas fa-user"></i></button>
+                    <button onclick="openCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div>
+                    <span class="hero-badge"><i class="fas fa-book"></i> +1000 ebooks professionnels</span>
+                    <h1>Développez vos <span>compétences</span> avec nos ebooks</h1>
+                    <p>Accédez à des formations professionnelles, des guides pratiques et des ressources exclusives. Téléchargement instantané.</p>
+                    <div class="hero-buttons">
+                        <a href="#ebooks" class="btn-primary">Explorer les ebooks <i class="fas fa-arrow-right"></i></a>
+                        <a href="#bestsellers" class="btn-outline">Voir les best-sellers</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div><h3>+1000</h3><p>Ebooks</p></div>
+                        <div><h3>50K+</h3><p>Lecteurs</p></div>
+                        <div><h3>4.8/5</h3><p>Note moyenne</p></div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://placehold.co/600x400/2563eb/ffffff?text=Ebook+Store" alt="Ebooks">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature"><i class="fas fa-download"></i><h3>Téléchargement instantané</h3><p>Accès immédiat après achat</p></div>
+                <div class="feature"><i class="fas fa-shield-alt"></i><h3>Satisfait ou remboursé</h3><p>30 jours pour changer d'avis</p></div>
+                <div class="feature"><i class="fas fa-infinity"></i><h3>Accès à vie</h3><p>Téléchargez quand vous voulez</p></div>
+                <div class="feature"><i class="fas fa-star"></i><h3>Contenu de qualité</h3><p>Écrits par des experts</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title">Explorez par catégorie</h2>
+            <div class="categories-grid">
+                <a href="#" class="category-card"><div class="icon">💼</div><h3>Business</h3><p>12 ebooks</p></a>
+                <a href="#" class="category-card"><div class="icon">💻</div><h3>Technologie</h3><p>8 ebooks</p></a>
+                <a href="#" class="category-card"><div class="icon">💰</div><h3>Finance</h3><p>6 ebooks</p></a>
+                <a href="#" class="category-card"><div class="icon">⚡</div><h3>Productivité</h3><p>5 ebooks</p></a>
+                <a href="#" class="category-card"><div class="icon">🎨</div><h3>Art</h3><p>4 ebooks</p></a>
+                <a href="#" class="category-card"><div class="icon">🧘</div><h3>Bien-être</h3><p>3 ebooks</p></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="ebooks">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>Ebooks populaires</h2>
+                    <p>Les formations préférées de nos lecteurs</p>
+                </div>
+                <a href="#" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- Bestsellers -->
+    <section class="bestsellers" id="bestsellers">
+        <div class="container">
+            <div class="bestsellers-content">
+                <div>
+                    <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);padding:10px 20px;border-radius:9999px;font-size:14px;font-weight:600;margin-bottom:20px"><i class="fas fa-fire"></i> Best-sellers</span>
+                    <h2>Les ebooks les plus vendus</h2>
+                    <p>Découvrez les formations qui ont déjà aidé des milliers de personnes à atteindre leurs objectifs.</p>
+                    <a href="#ebooks" class="btn-outline" style="background:white;color:var(--primary)">Découvrir <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="bestsellers-grid" id="bestsellersGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo"><i class="fas fa-book"></i> Ebook Store</a>
+                    <p>Votre bibliothèque numérique de référence. Des ebooks professionnels pour développer vos compétences.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Boutique</h4>
+                    <ul>
+                        <li><a href="#">Tous les ebooks</a></li>
+                        <li><a href="#">Nouveautés</a></li>
+                        <li><a href="#">Best-sellers</a></li>
+                        <li><a href="#">Promotions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Aide</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Comment ça marche</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Ebook Store. Tous droits réservés. 📚</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-cart"></i> Votre Panier</h2>
+            <button class="close-cart" onclick="closeCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-cart" style="font-size:64px;color:#e5e7eb;margin-bottom:16px;display:block"></i>
+                <p>Votre panier est vide</p>
+                <p style="color:#9ca3af;font-size:14px">Ajoutez des ebooks pour commencer</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total"><span>Total</span><span id="cartTotal">0 €</span></div>
+            <button class="btn-primary checkout-btn" onclick="checkout()" style="width:100%">Passer la commande</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Ebooks Data
+        const ebooks = [
+            { id: 1, title: "Marketing Digital 2024", author: "Jean Dupont", category: "business", price: 29.90, oldPrice: 49.90, description: "Maîtrisez les stratégies de marketing digital.", cover: "https://placehold.co/400x600/2563eb/ffffff?text=Marketing+Digital", pages: 245, rating: 4.8, reviews: 124, bestseller: true },
+            { id: 2, title: "Développement Web Full Stack", author: "Marie Martin", category: "technologie", price: 39.90, description: "Devenez développeur full stack.", cover: "https://placehold.co/400x600/7c3aed/ffffff?text=Full+Stack", pages: 380, rating: 4.9, reviews: 89, bestseller: true },
+            { id: 3, title: "Finance Personnelle", author: "Philippe Durand", category: "finance", price: 24.90, oldPrice: 34.90, description: "Prenez le contrôle de vos finances.", cover: "https://placehold.co/400x600/059669/ffffff?text=Finance", pages: 198, rating: 4.7, reviews: 156 },
+            { id: 4, title: "Productivité & Gestion du Temps", author: "Sophie Bernard", category: "productivite", price: 19.90, description: "Doublez votre productivité.", cover: "https://placehold.co/400x600/d97706/ffffff?text=Productivité", pages: 165, rating: 4.6, reviews: 78 },
+            { id: 5, title: "Photographie pour Débutants", author: "Lucas Petit", category: "art", price: 22.90, description: "Apprenez la photographie de A à Z.", cover: "https://placehold.co/400x600/db2777/ffffff?text=Photo", pages: 210, rating: 4.8, reviews: 92 },
+            { id: 6, title: "Copywriting & Ventes", author: "Emma Richard", category: "business", price: 27.90, oldPrice: 37.90, description: "Écrivez pour vendre.", cover: "https://placehold.co/400x600/ea580c/ffffff?text=Copywriting", pages: 185, rating: 4.9, reviews: 134, bestseller: true },
+            { id: 7, title: "Python pour Data Science", author: "Thomas Blanc", category: "technologie", price: 34.90, description: "Analysez des données comme un pro.", cover: "https://placehold.co/400x600/0891b2/ffffff?text=Python", pages: 320, rating: 4.7, reviews: 67 },
+            { id: 8, title: "Mindfulness & Méditation", author: "Claire Fontaine", category: "bien-etre", price: 17.90, description: "Retrouvez votre calme intérieur.", cover: "https://placehold.co/400x600/65a30d/ffffff?text=Mindfulness", pages: 145, rating: 4.8, reviews: 203 }
+        ];
+
+        // Cart State
+        let cart = JSON.parse(localStorage.getItem('ebook_cart')) || [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderBestsellers();
+            updateCartCount();
+        });
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = ebooks.map(ebook => `
+                <div class="product-card">
+                    ${ebook.bestseller ? '<span class="product-badge bestseller">Best-seller</span>' : ''}
+                    ${ebook.oldPrice ? `<span class="product-discount">-${Math.round((1 - ebook.price / ebook.oldPrice) * 100)}%</span>` : ''}
+                    <div class="product-image">
+                        <img src="${ebook.cover}" alt="${ebook.title}" loading="lazy">
+                        <div class="product-overlay"></div>
+                        <div class="product-actions">
+                            <button onclick="showNotification('Aperçu: ${ebook.title}')" title="Aperçu"><i class="fas fa-eye"></i></button>
+                            <button onclick="addToCart(${ebook.id})" title="Ajouter au panier"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${ebook.category}</span>
+                        <h3 class="product-name">${ebook.title}</h3>
+                        <p class="product-author">par ${ebook.author}</p>
+                        <div class="product-meta">
+                            <span><i class="fas fa-file-alt"></i> ${ebook.pages}p</span>
+                        </div>
+                        <div class="product-rating">
+                            <span class="stars">${'★'.repeat(Math.floor(ebook.rating))}</span>
+                            <span>${ebook.rating} (${ebook.reviews})</span>
+                        </div>
+                        <div class="product-price-row">
+                            <div>
+                                <span class="product-price">${ebook.price.toFixed(2)} €</span>
+                                ${ebook.oldPrice ? `<span class="product-old-price">${ebook.oldPrice.toFixed(2)} €</span>` : ''}
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${ebook.id})"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Bestsellers
+        function renderBestsellers() {
+            const grid = document.getElementById('bestsellersGrid');
+            const bestsellers = ebooks.filter(e => e.bestseller).slice(0, 3);
+            grid.innerHTML = bestsellers.map(ebook => `
+                <a href="#" class="bestseller-card" onclick="addToCart(${ebook.id}); return false;">
+                    <img src="${ebook.cover}" alt="${ebook.title}">
+                    <h3>${ebook.title}</h3>
+                    <p>${ebook.price.toFixed(2)} €</p>
+                </a>
+            `).join('');
+        }
+
+        // Add to Cart
+        function addToCart(ebookId) {
+            const ebook = ebooks.find(e => e.id === ebookId);
+            const existing = cart.find(item => item.id === ebookId);
+            
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ ...ebook, quantity: 1 });
+            }
+            
+            saveCart();
+            updateCartCount();
+            showNotification(`${ebook.title} ajouté au panier !`);
+        }
+
+        // Remove from Cart
+        function removeFromCart(ebookId) {
+            cart = cart.filter(item => item.id !== ebookId);
+            saveCart();
+            updateCartCount();
+            renderCartItems();
+        }
+
+        // Update Quantity
+        function updateQuantity(ebookId, delta) {
+            const item = cart.find(item => item.id === ebookId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(ebookId);
+                } else {
+                    saveCart();
+                    updateCartCount();
+                    renderCartItems();
+                }
+            }
+        }
+
+        // Save Cart
+        function saveCart() {
+            localStorage.setItem('ebook_cart', JSON.stringify(cart));
+        }
+
+        // Update Cart Count
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Open Cart
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+            document.getElementById('cartDrawer').classList.add('active');
+            renderCartItems();
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Cart
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.getElementById('cartDrawer').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Render Cart Items
+        function renderCartItems() {
+            const container = document.getElementById('cartItems');
+            const footer = document.getElementById('cartFooter');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart" style="font-size:64px;color:#e5e7eb;margin-bottom:16px;display:block"></i>
+                        <p>Votre panier est vide</p>
+                        <p style="color:#9ca3af;font-size:14px">Ajoutez des ebooks pour commencer</p>
+                    </div>
+                `;
+                footer.style.display = 'none';
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.cover}" alt="${item.title}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.title}</div>
+                        <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+                        <div class="cart-item-qty">
+                            <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${item.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+            
+            document.getElementById('cartTotal').textContent = total.toFixed(2) + ' €';
+            footer.style.display = 'block';
+        }
+
+        // Checkout
+        function checkout() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            let paypalUrl = 'https://www.paypal.com/cgi-bin/webscr?cmd=_cart&business=pichelegeorgesa@gmail.com&currency_code=EUR&upload=1';
+            
+            cart.forEach((item, index) => {
+                const num = index + 1;
+                paypalUrl += `&item_name_${num}=${encodeURIComponent(item.title)}`;
+                paypalUrl += `&amount_${num}=${item.price.toFixed(2)}`;
+                paypalUrl += `&quantity_${num}=${item.quantity}`;
+            });
+            
+            paypalUrl += `&return=${encodeURIComponent(window.location.origin + window.location.pathname)}`;
+            paypalUrl += `&cancel_return=${encodeURIComponent(window.location.origin + window.location.pathname)}`;
+            
+            localStorage.setItem('ebook_order_info', JSON.stringify({ items: cart, total }));
+            
+            window.location.href = paypalUrl;
+        }
+
+        // Show Notification
+        function showNotification(message) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
